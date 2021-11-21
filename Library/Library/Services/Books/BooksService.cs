@@ -20,11 +20,11 @@ namespace Library.Services.Books
         {
             var booksQuery = this._data.Books.AsQueryable();
             var booksCount = booksQuery.Count();
-            var maxPage = Math.Ceiling
-                (booksCount * 1.00 / ThreeCardsPerPage * 1.00);
+            var maxPage = this.GetMaxPage(booksCount);
 
-            if (currentPage > maxPage || currentPage < 1)
-                currentPage = CurrentPageStart;
+            currentPage =
+                this.CheckIfCurrentPageIsOutOfRangeAndReturnCurrentPageStart
+                    (currentPage, maxPage);
 
             return GetAllBooksQueryModel(currentPage, maxPage, booksQuery);
         }
@@ -51,6 +51,22 @@ namespace Library.Services.Books
                     Name = g.Name
                 })
                 .ToList();
+
+        public AllBooksServiceModel GetMyLibrary(int currentPage, string userId)
+        {
+            var booksQuery = this._data
+                .Books
+                .Where(b => b.UserId == userId)
+                .AsQueryable();
+            var booksCount = booksQuery.Count();
+            var maxPage = this.GetMaxPage(booksCount);
+
+            currentPage = 
+                this.CheckIfCurrentPageIsOutOfRangeAndReturnCurrentPageStart
+                    (currentPage, maxPage);
+
+            return GetAllBooksQueryModel(currentPage, maxPage, booksQuery);
+        }
 
         public bool AddBookAndReturnBoolean
             (AddBookFormModel addBookFormModel, string userId)
@@ -127,5 +143,23 @@ namespace Library.Services.Books
             this._data
                 .Genres
                 .FirstOrDefault(g => g.Id == genreId);
+
+        private double GetMaxPage(int count) =>
+            Math.Ceiling
+                (count * 1.00 / ThreeCardsPerPage * 1.00);
+
+        private int
+            CheckIfCurrentPageIsOutOfRangeAndReturnCurrentPageStart
+            (int currentPage, double maxPage)
+        {
+            if (currentPage > maxPage || currentPage < 1)
+            {
+                return CurrentPageStart;
+            }
+            else
+            {
+                return currentPage;
+            }
+        }
     }
 }

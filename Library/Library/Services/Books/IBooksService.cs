@@ -11,6 +11,8 @@ namespace Library.Services.Books
 
         IEnumerable<GenreServiceModel> GetAllGenresServiceModels();
 
+        AllBooksServiceModel GetMyLibrary(int currentPage, string userId);
+
         bool AddBookAndReturnBoolean
             (AddBookFormModel addBookFormModel, string userId);
     }
