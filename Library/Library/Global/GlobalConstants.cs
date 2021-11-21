@@ -26,5 +26,19 @@
 
             public const string UrlRegex = @"^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$";
         }
+
+        public static class Paging
+        {
+            public const int CurrentPageStart = 1;
+
+            public const int ThreeCardsPerPage = 3;
+        }
+
+        public static class ErrorMessages
+        {
+            public const string SomethingWentWrong = "Ups... something went wrong! ¯\\_(ツ)_/¯";
+
+            public const string NoBooksFound = "No books found!";
+        }
     }
 }

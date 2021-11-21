@@ -1,0 +1,62 @@
+﻿@model Library.Services.Books.Models.AllBooksServiceModel
+
+@{
+    ViewBag.Title = "All Books";
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+@if (Model.Books?.Count() >= 1)
+{
+    <cache expires-after="TimeSpan.FromDays(1)">
+        <partial name="_DividerPartial" model="@ViewBag.Title" />
+    </cache>
+
+    <div class="card-deck">
+        @foreach (var book in Model.Books)
+        {
+            <div class="row">
+                <div class="col-md-4 offset-md-5">
+                    <div class="card mb-3" style="width: 16rem">
+                        <img class="card-img-top" src="@book.ImageUrl" alt="@book.Title book cover image">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-center">@book.Title by @book.Author</h5>
+                            <p class="card-text">@book.ShortDescription</p>
+                            <a asp-controller="Books"
+                               asp-action="Details"
+                               asp-route-bookId="@book.Id"
+                               class="btn btn-outline-primary">
+                                View More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Books"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage - 1)">
+            Previous
+        </a>
+    </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == Model.MaxPage ||
+                                     Model.Books?.Count() < 1;
+    }
+
+    <div class="col-md-6">
+        <a class="btn btn-primary float-sm-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px"
+           asp-controller="Books"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)">
+            Next
+        </a>
+    </div>
+</div>

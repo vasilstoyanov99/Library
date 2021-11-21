@@ -1,3 +1,5 @@
+using Library.Services.Books;
+
 namespace Library
 {
     using Library.Infrastructure;
@@ -43,6 +45,8 @@ namespace Library
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
+
+            services.AddTransient<IBooksService, BooksService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
