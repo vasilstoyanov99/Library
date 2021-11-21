@@ -39,6 +39,8 @@
             public const string SomethingWentWrong = "Ups... something went wrong! ¯\\_(ツ)_/¯";
 
             public const string NoBooksFound = "No books found!";
+
+            public const string BookNotFound = "The book was not found!";
         }
     }
 }

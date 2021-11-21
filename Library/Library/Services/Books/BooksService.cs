@@ -1,4 +1,7 @@
-﻿namespace Library.Services.Books
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Library.Services.Books
 {
     using System.Collections.Generic;
     using Library.Data;
@@ -27,6 +30,20 @@
             return GetAllBooksQueryModel(currentPage, maxPage, booksQuery);
         }
 
+        public BookDetailsServiceModel GetBookDetails(string bookId, string userId)
+        {
+            var book = this.GetBookFromDb(bookId);
+
+            if (book == null)
+                return null;
+
+            var genre = this.GetGenreFromDb(book.GenreId).Name;
+            var canUserEdit = book.UserId == userId;
+
+            return GetBookDetailsServiceModel(book, genre, canUserEdit);
+        }
+
+
         private static AllBooksServiceModel GetAllBooksQueryModel
             (int currentPage, double maxPage, IQueryable<Book> booksQuery)
             => new()
@@ -52,5 +69,28 @@
                 })
                 .OrderBy(b => b.Title)
                 .ToList();
+
+        private static BookDetailsServiceModel
+            GetBookDetailsServiceModel(Book book, string genre, bool canUserEdit)
+            => new()
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                Genre = genre,
+                ImageUrl = book.ImageUrl,
+                LongDescription = book.LongDescription,
+                CanUserEdit = canUserEdit
+            };
+
+        private Book GetBookFromDb(string bookId) =>
+            this._data
+                .Books
+                .FirstOrDefault(b => b.Id == bookId);
+
+        private Genre GetGenreFromDb(string genreId) =>
+            this._data
+                .Genres
+                .FirstOrDefault(g => g.Id == genreId);
     }
 }

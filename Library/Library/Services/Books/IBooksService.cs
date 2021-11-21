@@ -5,5 +5,7 @@ namespace Library.Services.Books
     public interface IBooksService
     {
         AllBooksServiceModel GetAllBooks(int currentPage);
+
+        BookDetailsServiceModel GetBookDetails(string bookId, string userId);
     }
 }
