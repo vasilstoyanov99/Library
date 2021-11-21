@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Ganss.XSS;
 
 namespace Library.Services.Books
 {
@@ -43,6 +42,42 @@ namespace Library.Services.Books
             return GetBookDetailsServiceModel(book, genre, canUserEdit);
         }
 
+        public IEnumerable<GenreServiceModel> GetAllGenresServiceModels()
+            => _data
+                .Genres
+                .Select(g => new GenreServiceModel()
+                {
+                    Id = g.Id,
+                    Name = g.Name
+                })
+                .ToList();
+
+        public bool AddBookAndReturnBoolean
+            (AddBookFormModel addBookFormModel, string userId)
+        {
+            if (_data.Books.Any(b => b.Title == addBookFormModel.Title))
+                return false;
+
+            var htmlSanitizer = new HtmlSanitizer();
+
+            var newBook = new Book()
+            {
+                Title = htmlSanitizer.Sanitize(addBookFormModel.Title),
+                Author = htmlSanitizer.Sanitize(addBookFormModel.Author),
+                GenreId = htmlSanitizer.Sanitize(addBookFormModel.GenreId),
+                ShortDescription = htmlSanitizer.Sanitize
+                    (addBookFormModel.ShortDescription),
+                LongDescription = htmlSanitizer.Sanitize
+                    (addBookFormModel.LongDescription),
+                ImageUrl = htmlSanitizer.Sanitize(addBookFormModel.ImageUrl),
+                UserId = userId
+            };
+
+            _data.Books.Add(newBook);
+            _data.SaveChanges();
+
+            return true;
+        }
 
         private static AllBooksServiceModel GetAllBooksQueryModel
             (int currentPage, double maxPage, IQueryable<Book> booksQuery)

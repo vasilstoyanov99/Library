@@ -5,9 +5,20 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <partial name="_HomePagePicturePartial" />
-    <a asp-controller="Books"
-       asp-action="All"
-       class="btn btn-outline-primary" style="margin-top: 20px">
-        All books
-    </a>
+    @if (User.IsUser())
+    {
+        <a asp-controller="Books"
+           asp-action="MyLibrary"
+           class="btn btn-outline-primary" style="margin-top: 20px">
+            My Library
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Books"
+           asp-action="All"
+           class="btn btn-outline-primary" style="margin-top: 20px">
+            All books
+        </a>
+    }
 </div>

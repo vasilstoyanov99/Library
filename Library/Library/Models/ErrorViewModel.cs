@@ -1,7 +1,5 @@
 namespace Library.Models
 {
-    using System;
-
     public class ErrorViewModel
     {
         public string RequestId { get; set; }

@@ -3,6 +3,7 @@
     using System.Security.Claims;
 
     using static Areas.Admin.AdminConstants;
+    using static Areas.User.UserConstants;
 
     public static class ClaimsPrincipalExtensions
     {
@@ -11,5 +12,8 @@
 
         public static bool IsAdmin(this ClaimsPrincipal user)
             => user.IsInRole(AdminRoleName);
+
+        public static bool IsUser(this ClaimsPrincipal user)
+            => user.IsInRole(UserRoleName);
     }
 }

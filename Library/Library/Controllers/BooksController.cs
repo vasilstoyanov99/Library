@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using Library.Infrastructure;
+﻿using Library.Infrastructure;
+using Library.Services.Books.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
@@ -7,9 +7,7 @@ namespace Library.Controllers
     using Microsoft.AspNetCore.Mvc;
     using System;
     using Library.Services.Books;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using static Global.GlobalConstants.ErrorMessages;
     using static Areas.User.UserConstants;
 
@@ -42,6 +40,45 @@ namespace Library.Controllers
                 this.ModelState.AddModelError(String.Empty, BookNotFound);
 
             return View(bookDetailsServiceModel);
+        }
+
+        /*[Authorize("Admin" + "," + "User")]*/
+
+        [Authorize(Roles = UserRoleName)]
+        public IActionResult AddBook()
+        {
+            var addBookFormModel = new AddBookFormModel()
+                { Genres = _booksService.GetAllGenresServiceModels() };
+
+            if (addBookFormModel.Genres?.Count() < 1) 
+                this.ModelState.AddModelError(String.Empty, SomethingWentWrong);
+
+            return View(addBookFormModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddBook(AddBookFormModel addBookFormModel)
+        {
+            var userId = this.User.GetId();
+            var isBookAdded = _booksService
+                .AddBookAndReturnBoolean(addBookFormModel, userId);
+
+            if (!this.ModelState.IsValid)
+            {
+                this.ModelState.AddModelError(String.Empty, SomethingWentWrong);
+
+                return View("AddBook");
+            }
+
+            if (!isBookAdded)
+            {
+                this.ModelState.AddModelError(String.Empty, TitleAlreadyExists);
+
+                return View("AddBook");
+            }
+
+            //TODO: Redirect to My Books Page
+            return Redirect(nameof(this.All));
         }
     }
 }

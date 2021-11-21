@@ -1,4 +1,5 @@
-﻿using Library.Services.Books.Models;
+﻿using System.Collections.Generic;
+using Library.Services.Books.Models;
 
 namespace Library.Services.Books
 {
@@ -7,5 +8,10 @@ namespace Library.Services.Books
         AllBooksServiceModel GetAllBooks(int currentPage);
 
         BookDetailsServiceModel GetBookDetails(string bookId, string userId);
+
+        IEnumerable<GenreServiceModel> GetAllGenresServiceModels();
+
+        bool AddBookAndReturnBoolean
+            (AddBookFormModel addBookFormModel, string userId);
     }
 }

@@ -36,11 +36,27 @@
 
         public static class ErrorMessages
         {
-            public const string SomethingWentWrong = "Ups... something went wrong! ¯\\_(ツ)_/¯";
+            public const string SomethingWentWrong = "Ups... something went wrong!";
 
             public const string NoBooksFound = "No books found!";
 
             public const string BookNotFound = "The book was not found!";
+
+            public const string TitleLength = "The provided title must be at least {2} and {1} characters long!";
+
+            public const string AuthorNameLength = "The provided author's name must be at least {2} and {1} characters long!";
+
+            public const string ShortDescriptionLength = "The provided short description must be at least {2} and {1} characters long!";
+
+            public const string LongDescriptionLength = "The provided long description must be at least {2} and {1} characters long!";
+
+            public const string TitleAlreadyExists = "A book with the provided title already exists!";
+        }
+
+        public static class Recommendations
+        {
+            public const string ImageUrl =
+                "We recommend to upload it on imgur.com and then right click over the post -> Copy image address. The URL should end with .jpg / .png etc...";
         }
     }
 }
