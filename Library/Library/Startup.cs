@@ -41,6 +41,8 @@ namespace Library
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<LibraryDbContext>();
 
+            services.AddMemoryCache();
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
