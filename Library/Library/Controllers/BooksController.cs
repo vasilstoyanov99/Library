@@ -50,7 +50,7 @@ namespace Library.Controllers
             return View(bookDetailsServiceModel);
         }
 
-        [Authorize(Roles = UserRoleName)]
+        [Authorize(Roles = AdminOrUser)]
         public IActionResult AddBook()
         {
             var addBookFormModel = new AddBookFormModel()
@@ -63,7 +63,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoleName)]
+        [Authorize(Roles = AdminOrUser)]
         public IActionResult AddBook(AddBookFormModel addBookFormModel)
         {
             var userId = this.User.GetId();
