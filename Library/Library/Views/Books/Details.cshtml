@@ -18,27 +18,25 @@
                             <h3 class="text-center" style="padding: 10px">
                                 @Model.Title by @Model.Author
                             </h3>
-                            <h5 class="text-center" style="margin-top: 50px">Genre: @Model.Genre</h5>
-                            <h5 style="text-align: center">@Model.LongDescription</h5>
+                            <h5 class="text-center" style="margin-top: 20px">Genre: @Model.Genre</h5>
+                            <h5 style="margin-top: 30px">@Model.LongDescription</h5>
                         </div>
-                        <div class="footer text-center">
-                            <div class="actions">
-                                @if (Model.CanUserEdit || User.IsAdmin())
-                                {
-                                    <a asp-controller="Books"
-                                       asp-action="EditBook"
-                                       asp-route-bookId="@Model.Id"
-                                       class="btn btn-outline-warning">
-                                        Edit
-                                    </a>
-                                    <a asp-controller="Books"
-                                       asp-action="Delete"
-                                       asp-route-bookId="@Model.Id"
-                                       class="btn btn-outline-danger" style="margin: 10px">
-                                        Delete
-                                    </a>
-                                }
-                            </div>
+                        <div class="single_post_footer_special">
+                            @if (Model.CanUserEdit || User.IsAdmin())
+                            {
+                                <a asp-controller="Books"
+                                   asp-action="EditBook"
+                                   asp-route-bookId="@Model.Id"
+                                   class="btn btn-outline-warning">
+                                    Edit
+                                </a>
+                                <a asp-controller="Books"
+                                   asp-action="Delete"
+                                   asp-route-bookId="@Model.Id"
+                                   class="btn btn-outline-danger" style="margin: 10px">
+                                    Delete
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>
