@@ -137,6 +137,19 @@ namespace Library.Services.Books
             return (bookDoesNotExistsInDb, genreDoesNotExistsInDb);
         }
 
+        public bool DeleteBookAndReturnBoolean(string bookId)
+        {
+            var book = this.GetBookFromDb(bookId);
+
+            if (book == null)
+                return false;
+
+            _data.Books.Remove(book);
+            _data.SaveChanges();
+
+            return true;
+        }
+
         private static AllBooksServiceModel GetAllBooksQueryModel
             (int currentPage, double maxPage, IQueryable<Book> booksQuery)
             => new()

@@ -13,7 +13,7 @@ namespace Library.Controllers
     using System.Linq;
     using static Global.GlobalConstants.ErrorMessages;
     using static Global.GlobalConstants.MemoryCacheKeys;
-    using static Global.GlobalConstants.SuccessNotifications;
+    using static Global.GlobalConstants.Notifications;
     using static Global.CustomRoles;
     using static Areas.User.UserConstants;
 
@@ -135,6 +135,23 @@ namespace Library.Controllers
             }
 
             this.TempData[SuccessfullyEditedBookKey] = SuccessfullyEditedBook;
+
+            return Redirect(nameof(this.MyLibrary));
+        }
+
+        [Authorize(Roles = AdminOrUser)]
+        public IActionResult Delete([FromQuery] string bookId)
+        {
+            var isBookDeleted = _booksService.DeleteBookAndReturnBoolean(bookId);
+
+            if (!isBookDeleted)
+            {
+                this.TempData[UnsuccessfullyDeletedBookKey] = UnsuccessfullyDeletedBook;
+
+                return Redirect(nameof(this.MyLibrary));
+            }
+
+            this.TempData[SuccessfullyDeletedBookKey] = SuccessfullyDeletedBook;
 
             return Redirect(nameof(this.MyLibrary));
         }

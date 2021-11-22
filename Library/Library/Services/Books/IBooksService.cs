@@ -20,5 +20,7 @@ namespace Library.Services.Books
 
         (bool bookDoesNotExistsInDb, bool genreDoesNotExistsInDb) 
             EditBookAndReturnBooleans(EditBookFormModel editBookFormModel);
+
+        bool DeleteBookAndReturnBoolean(string bookId);
     }
 }
