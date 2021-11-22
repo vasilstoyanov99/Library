@@ -51,6 +51,8 @@
             public const string LongDescriptionLength = "The provided long description must be at least {2} and {1} characters long!";
 
             public const string TitleAlreadyExists = "A book with the provided title already exists!";
+
+            public const string GenreDoesNotExists = "The provied genre does not exists in our database!";
         }
 
         public static class Recommendations
@@ -58,5 +60,11 @@
             public const string ImageUrl =
                 "We recommend to upload it on imgur.com and then right click over the post -> Copy image address. The URL should end with .jpg / .png etc...";
         }
+
+        public static class MemoryCacheKeys
+        {
+            public const string GenresCacheKey = nameof(GenresCacheKey);
+        }
     }
 }
+

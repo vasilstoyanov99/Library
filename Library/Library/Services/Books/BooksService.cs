@@ -42,8 +42,8 @@ namespace Library.Services.Books
             return GetBookDetailsServiceModel(book, genre, canUserEdit);
         }
 
-        public IEnumerable<GenreServiceModel> GetAllGenresServiceModels()
-            => _data
+        public List<GenreServiceModel> GetAllGenresServiceModels()
+            => this._data
                 .Genres
                 .Select(g => new GenreServiceModel()
                 {
@@ -68,31 +68,73 @@ namespace Library.Services.Books
             return GetAllBooksQueryModel(currentPage, maxPage, booksQuery);
         }
 
-        public bool AddBookAndReturnBoolean
+        public (bool doesTitleExistsInDb, bool genreDoesNotExistsInDb) AddBookAndReturnBooleans
             (AddBookFormModel addBookFormModel, string userId)
         {
-            if (_data.Books.Any(b => b.Title == addBookFormModel.Title))
-                return false;
+            var doesTitleExistsInDb = false;
+            var genreDoesNotExistsInDb = false;
+
+            if (this._data.Books.Any(b => b.Title == addBookFormModel.Title))
+            {
+                doesTitleExistsInDb = true;
+                return (doesTitleExistsInDb, genreDoesNotExistsInDb);
+            }
 
             var htmlSanitizer = new HtmlSanitizer();
+            var genreId = htmlSanitizer.Sanitize(addBookFormModel.GenreId);
 
-            var newBook = new Book()
+            if (!this.CheckIfGenreExistsInDb(genreId))
             {
-                Title = htmlSanitizer.Sanitize(addBookFormModel.Title),
-                Author = htmlSanitizer.Sanitize(addBookFormModel.Author),
-                GenreId = htmlSanitizer.Sanitize(addBookFormModel.GenreId),
-                ShortDescription = htmlSanitizer.Sanitize
-                    (addBookFormModel.ShortDescription),
-                LongDescription = htmlSanitizer.Sanitize
-                    (addBookFormModel.LongDescription),
-                ImageUrl = htmlSanitizer.Sanitize(addBookFormModel.ImageUrl),
-                UserId = userId
-            };
+                genreDoesNotExistsInDb = true;
+                return (doesTitleExistsInDb, genreDoesNotExistsInDb);
+            }
 
-            _data.Books.Add(newBook);
-            _data.SaveChanges();
+            var newBook = this.FillBookDbModelWithDataAndReturnIt
+                (addBookFormModel, genreId, userId, htmlSanitizer);
+            this._data.Books.Add(newBook);
+            this._data.SaveChanges();
 
-            return true;
+            return (doesTitleExistsInDb, doesTitleExistsInDb);
+        }
+
+        public EditBookFormModel GetEditBookFormModel(string bookId)
+        {
+            var book = this.GetBookFromDb(bookId);
+
+            if (book == null)
+                return null;
+
+            var genre = GetGenreFromDb(book.GenreId).Name;
+
+            return this.GetEditBookFormModel(book, genre);
+        }
+
+        public (bool bookDoesNotExistsInDb, bool genreDoesNotExistsInDb) 
+            EditBookAndReturnBooleans(EditBookFormModel editBookFormModel)
+        {
+            var bookDoesNotExistsInDb = false;
+            var genreDoesNotExistsInDb = false;
+
+            var book = this.GetBookFromDb(editBookFormModel.Id);
+
+            if (book == null)
+            {
+                bookDoesNotExistsInDb = true;
+                return (bookDoesNotExistsInDb, genreDoesNotExistsInDb);
+            }
+
+            var htmlSanitizer = new HtmlSanitizer();
+            var genreId = htmlSanitizer.Sanitize(editBookFormModel.GenreId);
+
+            if (!this.CheckIfGenreExistsInDb(genreId))
+            {
+                genreDoesNotExistsInDb = true;
+                return (bookDoesNotExistsInDb, genreDoesNotExistsInDb);
+            }
+
+            UpdateBookDbModelAndSaveChanges(book, genreId, editBookFormModel, htmlSanitizer);
+
+            return (bookDoesNotExistsInDb, genreDoesNotExistsInDb);
         }
 
         private static AllBooksServiceModel GetAllBooksQueryModel
@@ -133,6 +175,57 @@ namespace Library.Services.Books
                 LongDescription = book.LongDescription,
                 CanUserEdit = canUserEdit
             };
+
+        private Book FillBookDbModelWithDataAndReturnIt
+        (AddBookFormModel addBookFormModel, string genreId,
+            string userId, HtmlSanitizer htmlSanitizer) =>
+            new()
+            {
+                Title = htmlSanitizer.Sanitize(addBookFormModel.Title),
+                Author = htmlSanitizer.Sanitize(addBookFormModel.Author),
+                GenreId = genreId,
+                ShortDescription = htmlSanitizer.Sanitize
+                    (addBookFormModel.ShortDescription),
+                LongDescription = htmlSanitizer.Sanitize
+                    (addBookFormModel.LongDescription),
+                ImageUrl = htmlSanitizer.Sanitize(addBookFormModel.ImageUrl),
+                UserId = userId
+            };
+
+        private EditBookFormModel GetEditBookFormModel
+            (Book book, string genre) =>
+            new()
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                CurrentGenre = genre,
+                GenreId = book.GenreId,
+                ImageUrl = book.ImageUrl,
+                LongDescription = book.LongDescription,
+                ShortDescription = book.ShortDescription,
+                Genres = this.GetAllGenresServiceModels()
+            };
+
+        private void UpdateBookDbModelAndSaveChanges
+            (Book book, string genreId, 
+                EditBookFormModel editBookFormModel, HtmlSanitizer htmlSanitizer)
+        {
+            book.Author = htmlSanitizer.Sanitize(editBookFormModel.Author);
+            book.Title = htmlSanitizer.Sanitize(editBookFormModel.Title);
+            book.GenreId = genreId;
+            book.ShortDescription = htmlSanitizer.Sanitize(editBookFormModel.ShortDescription);
+            book.LongDescription = htmlSanitizer.Sanitize(editBookFormModel.LongDescription);
+            book.ImageUrl = htmlSanitizer.Sanitize(editBookFormModel.ImageUrl);
+            this._data.SaveChanges();
+        }
+
+        private bool CheckIfGenreExistsInDb(string genreId)
+        {
+            var genre = this.GetGenreFromDb(genreId);
+
+            return genre != null;
+        }
 
         private Book GetBookFromDb(string bookId) =>
             this._data

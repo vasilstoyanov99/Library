@@ -9,11 +9,16 @@ namespace Library.Services.Books
 
         BookDetailsServiceModel GetBookDetails(string bookId, string userId);
 
-        IEnumerable<GenreServiceModel> GetAllGenresServiceModels();
+        List<GenreServiceModel> GetAllGenresServiceModels();
 
         AllBooksServiceModel GetMyLibrary(int currentPage, string userId);
 
-        bool AddBookAndReturnBoolean
+        (bool doesTitleExistsInDb, bool genreDoesNotExistsInDb) AddBookAndReturnBooleans
             (AddBookFormModel addBookFormModel, string userId);
+
+        EditBookFormModel GetEditBookFormModel(string bookId);
+
+        (bool bookDoesNotExistsInDb, bool genreDoesNotExistsInDb) 
+            EditBookAndReturnBooleans(EditBookFormModel editBookFormModel);
     }
 }

@@ -1,0 +1,71 @@
+﻿@using Library.Global
+@model Library.Services.Books.Models.EditBookFormModel
+
+@{ ViewBag.Title = "Edit Book"; }
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+@if (Model.Genres?.Count() >= 1)
+{
+    <div class="row">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control">
+                    <span asp-validation-for="Title" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Author"></label>
+                    <input asp-for="Author" class="form-control">
+                    <span asp-validation-for="Author" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GenreId">
+                        Please choose a genre!
+                    </label>
+                    <select asp-for="GenreId" class="form-control">
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="GenreId" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ShortDescription"></label>
+                    <textarea asp-for="ShortDescription" class="form-control"></textarea>
+                    <span asp-validation-for="ShortDescription" class="small text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="LongDescription"></label>
+                    <textarea asp-for="LongDescription" rows="4" class="form-control"></textarea>
+                    <span asp-validation-for="LongDescription" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageUrl"></label>
+                    <input asp-for="ImageUrl" class="form-control">
+                    <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+                    <h7 class="text-muted">
+                        @GlobalConstants.Recommendations.ImageUrl
+                    </h7>
+                </div>
+                <input type="hidden" name="Id" value="@Model.Id">
+                <input asp-controller="Books"
+                       asp-action="AddBook"
+                       class="btn btn-outline-success text-center offset-md-4" type="submit" value="Add" />
+                <a asp-controller="Books"
+                   asp-action="All"
+                   class="btn btn-outline-primary" style="margin: 5px">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
