@@ -6,7 +6,7 @@ namespace Library.Services.Books.Models
 
     public class AllBooksServiceModel
     {
-        public AllBooksServiceModel() => this.CurrentPage = CurrentPageStart;
+        public AllBooksServiceModel() => CurrentPage = CurrentPageStart;
 
         public int CurrentPage { get; set; }
 

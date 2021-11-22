@@ -3,9 +3,9 @@
 namespace Library.Services.Books
 {
     using System.Collections.Generic;
-    using Library.Data;
+    using Data;
     using Library.Data.Models;
-    using Library.Services.Books.Models;
+    using Models;
     using System;
     using System.Linq;
     using static Global.GlobalConstants.Paging;
@@ -14,16 +14,16 @@ namespace Library.Services.Books
     {
         private readonly LibraryDbContext _data;
 
-        public BooksService(LibraryDbContext data) => this._data = data;
+        public BooksService(LibraryDbContext data) => _data = data;
 
         public AllBooksServiceModel GetAllBooks(int currentPage)
         {
-            var booksQuery = this._data.Books.AsQueryable();
+            var booksQuery = _data.Books.AsQueryable();
             var booksCount = booksQuery.Count();
-            var maxPage = this.GetMaxPage(booksCount);
+            var maxPage = GetMaxPage(booksCount);
 
             currentPage =
-                this.CheckIfCurrentPageIsOutOfRangeAndReturnCurrentPageStart
+                CheckIfCurrentPageIsOutOfRangeAndReturnCurrentPageStart
                     (currentPage, maxPage);
 
             return GetAllBooksQueryModel(currentPage, maxPage, booksQuery);
@@ -31,19 +31,19 @@ namespace Library.Services.Books
 
         public BookDetailsServiceModel GetBookDetails(string bookId, string userId)
         {
-            var book = this.GetBookFromDb(bookId);
+            var book = GetBookFromDb(bookId);
 
             if (book == null)
                 return null;
 
-            var genre = this.GetGenreFromDb(book.GenreId).Name;
+            var genre = GetGenreFromDb(book.GenreId).Name;
             var canUserEdit = book.UserId == userId;
 
             return GetBookDetailsServiceModel(book, genre, canUserEdit);
         }
 
         public List<GenreServiceModel> GetAllGenresServiceModels()
-            => this._data
+            => _data
                 .Genres
                 .Select(g => new GenreServiceModel()
                 {
@@ -54,15 +54,15 @@ namespace Library.Services.Books
 
         public AllBooksServiceModel GetMyLibrary(int currentPage, string userId)
         {
-            var booksQuery = this._data
+            var booksQuery = _data
                 .Books
                 .Where(b => b.UserId == userId)
                 .AsQueryable();
             var booksCount = booksQuery.Count();
-            var maxPage = this.GetMaxPage(booksCount);
+            var maxPage = GetMaxPage(booksCount);
 
             currentPage = 
-                this.CheckIfCurrentPageIsOutOfRangeAndReturnCurrentPageStart
+                CheckIfCurrentPageIsOutOfRangeAndReturnCurrentPageStart
                     (currentPage, maxPage);
 
             return GetAllBooksQueryModel(currentPage, maxPage, booksQuery);
@@ -74,7 +74,7 @@ namespace Library.Services.Books
             var doesTitleExistsInDb = false;
             var genreDoesNotExistsInDb = false;
 
-            if (this._data.Books.Any(b => b.Title == addBookFormModel.Title))
+            if (_data.Books.Any(b => b.Title == addBookFormModel.Title))
             {
                 doesTitleExistsInDb = true;
                 return (doesTitleExistsInDb, genreDoesNotExistsInDb);
@@ -83,30 +83,30 @@ namespace Library.Services.Books
             var htmlSanitizer = new HtmlSanitizer();
             var genreId = htmlSanitizer.Sanitize(addBookFormModel.GenreId);
 
-            if (!this.CheckIfGenreExistsInDb(genreId))
+            if (!CheckIfGenreExistsInDb(genreId))
             {
                 genreDoesNotExistsInDb = true;
                 return (doesTitleExistsInDb, genreDoesNotExistsInDb);
             }
 
-            var newBook = this.FillBookDbModelWithDataAndReturnIt
+            var newBook = FillBookDbModelWithDataAndReturnIt
                 (addBookFormModel, genreId, userId, htmlSanitizer);
-            this._data.Books.Add(newBook);
-            this._data.SaveChanges();
+            _data.Books.Add(newBook);
+            _data.SaveChanges();
 
             return (doesTitleExistsInDb, doesTitleExistsInDb);
         }
 
         public EditBookFormModel GetEditBookFormModel(string bookId)
         {
-            var book = this.GetBookFromDb(bookId);
+            var book = GetBookFromDb(bookId);
 
             if (book == null)
                 return null;
 
             var genre = GetGenreFromDb(book.GenreId).Name;
 
-            return this.GetEditBookFormModel(book, genre);
+            return GetEditBookFormModel(book, genre);
         }
 
         public (bool bookDoesNotExistsInDb, bool genreDoesNotExistsInDb) 
@@ -115,7 +115,7 @@ namespace Library.Services.Books
             var bookDoesNotExistsInDb = false;
             var genreDoesNotExistsInDb = false;
 
-            var book = this.GetBookFromDb(editBookFormModel.Id);
+            var book = GetBookFromDb(editBookFormModel.Id);
 
             if (book == null)
             {
@@ -126,7 +126,7 @@ namespace Library.Services.Books
             var htmlSanitizer = new HtmlSanitizer();
             var genreId = htmlSanitizer.Sanitize(editBookFormModel.GenreId);
 
-            if (!this.CheckIfGenreExistsInDb(genreId))
+            if (!CheckIfGenreExistsInDb(genreId))
             {
                 genreDoesNotExistsInDb = true;
                 return (bookDoesNotExistsInDb, genreDoesNotExistsInDb);
@@ -139,7 +139,7 @@ namespace Library.Services.Books
 
         public bool DeleteBookAndReturnBoolean(string bookId)
         {
-            var book = this.GetBookFromDb(bookId);
+            var book = GetBookFromDb(bookId);
 
             if (book == null)
                 return false;
@@ -217,7 +217,7 @@ namespace Library.Services.Books
                 ImageUrl = book.ImageUrl,
                 LongDescription = book.LongDescription,
                 ShortDescription = book.ShortDescription,
-                Genres = this.GetAllGenresServiceModels()
+                Genres = GetAllGenresServiceModels()
             };
 
         private void UpdateBookDbModelAndSaveChanges
@@ -230,23 +230,23 @@ namespace Library.Services.Books
             book.ShortDescription = htmlSanitizer.Sanitize(editBookFormModel.ShortDescription);
             book.LongDescription = htmlSanitizer.Sanitize(editBookFormModel.LongDescription);
             book.ImageUrl = htmlSanitizer.Sanitize(editBookFormModel.ImageUrl);
-            this._data.SaveChanges();
+            _data.SaveChanges();
         }
 
         private bool CheckIfGenreExistsInDb(string genreId)
         {
-            var genre = this.GetGenreFromDb(genreId);
+            var genre = GetGenreFromDb(genreId);
 
             return genre != null;
         }
 
         private Book GetBookFromDb(string bookId) =>
-            this._data
+            _data
                 .Books
                 .FirstOrDefault(b => b.Id == bookId);
 
         private Genre GetGenreFromDb(string genreId) =>
-            this._data
+            _data
                 .Genres
                 .FirstOrDefault(g => g.Id == genreId);
 

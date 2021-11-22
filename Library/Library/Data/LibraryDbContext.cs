@@ -4,7 +4,7 @@ namespace Library.Data
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using Library.Data.Models;
+    using Models;
 
     public class LibraryDbContext : IdentityDbContext
     {

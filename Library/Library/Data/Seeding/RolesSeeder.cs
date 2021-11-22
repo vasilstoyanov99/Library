@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Library.Data.Seeding
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using static Areas.Admin.AdminConstants;
     using static Areas.User.UserConstants;

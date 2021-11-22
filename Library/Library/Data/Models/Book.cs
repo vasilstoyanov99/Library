@@ -7,7 +7,7 @@ namespace Library.Data.Models
 
     public class Book
     {
-        public Book() => this.Id = Guid.NewGuid().ToString();
+        public Book() => Id = Guid.NewGuid().ToString();
 
         public string Id { get; init; }
 

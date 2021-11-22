@@ -9,8 +9,8 @@
     {
         public Genre()
         {
-            this.Id = Guid.NewGuid().ToString();
-            this.Books = new HashSet<Book>();
+            Id = Guid.NewGuid().ToString();
+            Books = new HashSet<Book>();
         }
 
         public string Id { get; init; }

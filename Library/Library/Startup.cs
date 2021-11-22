@@ -2,9 +2,9 @@ using Library.Services.Books;
 
 namespace Library
 {
-    using Library.Infrastructure;
+    using Infrastructure;
     using Microsoft.AspNetCore.Mvc;
-    using Library.Data;
+    using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;

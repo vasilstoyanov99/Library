@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Library.Data.Models;
+    using Models;
 
     public class GenresSeeder : ISeeder
     {

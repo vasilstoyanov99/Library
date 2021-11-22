@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Library.Data.Models;
 using Library.Infrastructure;
 using Library.Services.Books.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,13 +8,12 @@ namespace Library.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System;
-    using Library.Services.Books;
+    using Services.Books;
     using System.Linq;
     using static Global.GlobalConstants.ErrorMessages;
     using static Global.GlobalConstants.MemoryCacheKeys;
     using static Global.GlobalConstants.Notifications;
     using static Global.CustomRoles;
-    using static Areas.User.UserConstants;
 
     public class BooksController : Controller
     {
@@ -30,22 +28,22 @@ namespace Library.Controllers
 
         public IActionResult All([FromQuery] int currentPage)
         {
-            var allBooksServiceModel = this._booksService.GetAllBooks(currentPage);
+            var allBooksServiceModel = _booksService.GetAllBooks(currentPage);
 
             if (allBooksServiceModel.Books?.Count() == 0) 
-                this.ModelState.AddModelError(String.Empty, NoBooksFound);
+                ModelState.AddModelError(String.Empty, NoBooksFound);
 
             return View(allBooksServiceModel);
         }
 
         public IActionResult Details([FromQuery]  string bookId)
         {
-            var userId = this.User.GetId();
-            var bookDetailsServiceModel = this._booksService.GetBookDetails
+            var userId = User.GetId();
+            var bookDetailsServiceModel = _booksService.GetBookDetails
                 (bookId, userId);
 
             if (bookDetailsServiceModel == null)
-                this.ModelState.AddModelError(String.Empty, BookNotFound);
+                ModelState.AddModelError(String.Empty, BookNotFound);
 
             return View(bookDetailsServiceModel);
         }
@@ -54,10 +52,10 @@ namespace Library.Controllers
         public IActionResult AddBook()
         {
             var addBookFormModel = new AddBookFormModel()
-                { Genres = this._booksService.GetAllGenresServiceModels() };
+                { Genres = _booksService.GetAllGenresServiceModels() };
 
             if (addBookFormModel.Genres?.Count() < 1) 
-                this.ModelState.AddModelError(String.Empty, SomethingWentWrong);
+                ModelState.AddModelError(String.Empty, SomethingWentWrong);
 
             return View(addBookFormModel);
         }
@@ -66,43 +64,43 @@ namespace Library.Controllers
         [Authorize(Roles = AdminOrUser)]
         public IActionResult AddBook(AddBookFormModel addBookFormModel)
         {
-            var userId = this.User.GetId();
-            var results = this._booksService
+            var userId = User.GetId();
+            var results = _booksService
                 .AddBookAndReturnBooleans(addBookFormModel, userId);
-            var genres = this.GetGenresAndSetCacheIfNeeded();
+            var genres = GetGenresAndSetCacheIfNeeded();
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                this.ModelState.AddModelError(String.Empty, SomethingWentWrong);
+                ModelState.AddModelError(String.Empty, SomethingWentWrong);
                 addBookFormModel.Genres = genres;
 
                 return View("AddBook", addBookFormModel);
             }
 
             if (results.doesTitleExistsInDb)
-                this.ModelState.AddModelError(String.Empty, TitleAlreadyExists);
+                ModelState.AddModelError(String.Empty, TitleAlreadyExists);
 
             if (results.genreDoesNotExistsInDb) 
-                this.ModelState.AddModelError(String.Empty, GenreDoesNotExists);
+                ModelState.AddModelError(String.Empty, GenreDoesNotExists);
 
-            if (this.ModelState.ErrorCount > 0)
+            if (ModelState.ErrorCount > 0)
             {
                 addBookFormModel.Genres = genres;
                 return View("AddBook", addBookFormModel);
             }
 
-            this.TempData[SuccessfullyAddedBookKey] = SuccessfullyAddedBook;
+            TempData[SuccessfullyAddedBookKey] = SuccessfullyAddedBook;
 
-            return Redirect(nameof(this.MyLibrary));
+            return Redirect(nameof(MyLibrary));
         }
 
         [Authorize(Roles = AdminOrUser)]
         public IActionResult EditBook(string bookId)
         {
-            var editBookFormModel = this._booksService.GetEditBookFormModel(bookId);
+            var editBookFormModel = _booksService.GetEditBookFormModel(bookId);
 
             if (editBookFormModel == null) 
-                this.ModelState.AddModelError(String.Empty, BookNotFound);
+                ModelState.AddModelError(String.Empty, BookNotFound);
 
             return View(editBookFormModel);
         }
@@ -111,32 +109,32 @@ namespace Library.Controllers
         [Authorize(Roles = AdminOrUser)]
         public IActionResult Edit(EditBookFormModel editBookFormModel)
         {
-            var results = this._booksService.EditBookAndReturnBooleans(editBookFormModel);
-            var genres = this.GetGenresAndSetCacheIfNeeded();
+            var results = _booksService.EditBookAndReturnBooleans(editBookFormModel);
+            var genres = GetGenresAndSetCacheIfNeeded();
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                this.ModelState.AddModelError(String.Empty, SomethingWentWrong);
+                ModelState.AddModelError(String.Empty, SomethingWentWrong);
                 editBookFormModel.Genres = genres;
 
                 return View("EditBook", editBookFormModel);
             }
 
             if (results.bookDoesNotExistsInDb) 
-                this.ModelState.AddModelError(String.Empty, BookNotFound);
+                ModelState.AddModelError(String.Empty, BookNotFound);
 
             if (results.genreDoesNotExistsInDb) 
-                this.ModelState.AddModelError(String.Empty, GenreDoesNotExists);
+                ModelState.AddModelError(String.Empty, GenreDoesNotExists);
 
-            if (this.ModelState.ErrorCount > 0)
+            if (ModelState.ErrorCount > 0)
             {
                 editBookFormModel.Genres = genres;
                 return View("EditBook", editBookFormModel);
             }
 
-            this.TempData[SuccessfullyEditedBookKey] = SuccessfullyEditedBook;
+            TempData[SuccessfullyEditedBookKey] = SuccessfullyEditedBook;
 
-            return Redirect(nameof(this.MyLibrary));
+            return Redirect(nameof(MyLibrary));
         }
 
         [Authorize(Roles = AdminOrUser)]
@@ -146,32 +144,32 @@ namespace Library.Controllers
 
             if (!isBookDeleted)
             {
-                this.TempData[UnsuccessfullyDeletedBookKey] = UnsuccessfullyDeletedBook;
+                TempData[UnsuccessfullyDeletedBookKey] = UnsuccessfullyDeletedBook;
 
-                return Redirect(nameof(this.MyLibrary));
+                return Redirect(nameof(MyLibrary));
             }
 
-            this.TempData[SuccessfullyDeletedBookKey] = SuccessfullyDeletedBook;
+            TempData[SuccessfullyDeletedBookKey] = SuccessfullyDeletedBook;
 
-            return Redirect(nameof(this.MyLibrary));
+            return Redirect(nameof(MyLibrary));
         }
 
         [Authorize(Roles = AdminOrUser)]
         public IActionResult MyLibrary([FromQuery] int currentPage)
         {
             var userId = User.GetId();
-            var allBooksServiceModel = this._booksService
+            var allBooksServiceModel = _booksService
                 .GetMyLibrary(currentPage, userId);
 
             if (allBooksServiceModel.Books?.Count() == 0) 
-                this.ModelState.AddModelError(String.Empty, NoBooksFound);
+                ModelState.AddModelError(String.Empty, NoBooksFound);
 
             return View(allBooksServiceModel);
         }
 
         private List<GenreServiceModel> GetGenresAndSetCacheIfNeeded()
         {
-            var genres = this._cache.Get<List<GenreServiceModel>>(GenresCacheKey);
+            var genres = _cache.Get<List<GenreServiceModel>>(GenresCacheKey);
 
             if (genres == null)
             {
@@ -180,7 +178,7 @@ namespace Library.Controllers
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
 
-                this._cache.Set(GenresCacheKey, genres, cacheOptions);
+                _cache.Set(GenresCacheKey, genres, cacheOptions);
             }
 
             return genres;

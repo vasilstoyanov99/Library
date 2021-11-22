@@ -5,7 +5,7 @@ namespace Library.Infrastructure
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Library.Data;
+    using Data;
     using Microsoft.EntityFrameworkCore;
 
     public static class ApplicationBuilderExtensions
