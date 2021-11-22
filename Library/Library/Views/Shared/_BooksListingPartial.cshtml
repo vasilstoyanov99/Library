@@ -4,9 +4,7 @@
 
 @if (Model.Books?.Count() >= 1)
 {
-    <cache expires-after="TimeSpan.FromDays(1)">
-        <partial name="_DividerPartial" model="@ViewBag.Title" />
-    </cache>
+    <partial name="_DividerPartial" model="@ViewBag.Title" />
 
     <div class="card-deck">
         @foreach (var book in Model.Books)
