@@ -139,7 +139,7 @@ namespace Library.Controllers
             return Redirect(nameof(this.MyLibrary));
         }
 
-        [Authorize(Roles = UserRoleName)]
+        [Authorize(Roles = AdminOrUser)]
         public IActionResult MyLibrary([FromQuery] int currentPage)
         {
             var userId = User.GetId();
