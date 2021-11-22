@@ -40,8 +40,6 @@ namespace Library.Controllers
             return View(bookDetailsServiceModel);
         }
 
-        /*[Authorize("Admin" + "," + "User")]*/
-
         [Authorize(Roles = UserRoleName)]
         public IActionResult AddBook()
         {
@@ -55,16 +53,6 @@ namespace Library.Controllers
         }
 
         [Authorize(Roles = UserRoleName)]
-        public IActionResult MyLibrary([FromQuery] int currentPage)
-        {
-            var allBooksServiceModel = _booksService.GetAllBooks(currentPage);
-
-            if (allBooksServiceModel.Books?.Count() == 0) 
-                this.ModelState.AddModelError(String.Empty, NoBooksFound);
-
-            return View(allBooksServiceModel);
-        }
-
         [HttpPost]
         public IActionResult AddBook(AddBookFormModel addBookFormModel)
         {
@@ -88,5 +76,20 @@ namespace Library.Controllers
 
             return Redirect(nameof(this.MyLibrary));
         }
+
+        [Authorize(Roles = UserRoleName)]
+        public IActionResult MyLibrary([FromQuery] int currentPage)
+        {
+            var userId = User.GetId();
+            var allBooksServiceModel = _booksService
+                .GetMyLibrary(currentPage, userId);
+
+            if (allBooksServiceModel.Books?.Count() == 0) 
+                this.ModelState.AddModelError(String.Empty, NoBooksFound);
+
+            return View(allBooksServiceModel);
+        }
+
+        
     }
 }
