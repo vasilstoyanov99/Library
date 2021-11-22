@@ -65,6 +65,19 @@
         {
             public const string GenresCacheKey = nameof(GenresCacheKey);
         }
+
+        public static class SuccessNotifications
+        {
+            public const string SuccessfullyAddedBookKey =
+                "SABK";
+
+            public const string SuccessfullyAddedBook = "Book added successfully!";
+
+            public const string SuccessfullyEditedBookKey =
+                "SEBK";
+
+            public const string SuccessfullyEditedBook = "The book was edited successfully!";
+        }
     }
 }
 

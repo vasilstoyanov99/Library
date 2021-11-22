@@ -13,6 +13,7 @@ namespace Library.Controllers
     using System.Linq;
     using static Global.GlobalConstants.ErrorMessages;
     using static Global.GlobalConstants.MemoryCacheKeys;
+    using static Global.GlobalConstants.SuccessNotifications;
     using static Global.CustomRoles;
     using static Areas.User.UserConstants;
 
@@ -90,6 +91,8 @@ namespace Library.Controllers
                 return View("AddBook", addBookFormModel);
             }
 
+            this.TempData[SuccessfullyAddedBookKey] = SuccessfullyAddedBook;
+
             return Redirect(nameof(this.MyLibrary));
         }
 
@@ -106,7 +109,6 @@ namespace Library.Controllers
 
         [HttpPost]
         [Authorize(Roles = AdminOrUser)]
-
         public IActionResult Edit(EditBookFormModel editBookFormModel)
         {
             var results = this._booksService.EditBookAndReturnBooleans(editBookFormModel);
@@ -131,6 +133,8 @@ namespace Library.Controllers
                 editBookFormModel.Genres = genres;
                 return View("EditBook", editBookFormModel);
             }
+
+            this.TempData[SuccessfullyEditedBookKey] = SuccessfullyEditedBook;
 
             return Redirect(nameof(this.MyLibrary));
         }
