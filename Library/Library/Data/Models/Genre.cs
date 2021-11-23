@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Collections.Generic;
+
     using static Global.GlobalConstants.DataValidations;
 
     public class Genre

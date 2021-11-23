@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Library.Data.Seeding
+﻿namespace Library.Data.Seeding
 {
     using System;
     using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.DependencyInjection;
+
     using static Areas.Admin.AdminConstants;
     using static Areas.User.UserConstants;
 

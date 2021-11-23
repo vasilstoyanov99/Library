@@ -1,9 +1,10 @@
-﻿using Library.Data.Models;
-
-namespace Library.Data.Seeding
+﻿namespace Library.Data.Seeding
 {
     using System;
     using System.Linq;
+
+    using Models;
+
     using static Data.UserSeedData;
     using static Data.BooksSeedData;
 

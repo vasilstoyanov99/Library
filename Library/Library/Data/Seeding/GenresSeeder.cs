@@ -1,8 +1,9 @@
 ﻿namespace Library.Data.Seeding
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Collections.Generic;
+
     using Models;
 
     public class GenresSeeder : ISeeder

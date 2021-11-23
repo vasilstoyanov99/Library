@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+
     using static Areas.User.UserConstants;
     using static Data.UserSeedData;
 

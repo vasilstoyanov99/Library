@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Library.Data.Models
+﻿namespace Library.Data.Models
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
+
     using static Global.GlobalConstants.DataValidations;
 
     public class Book
