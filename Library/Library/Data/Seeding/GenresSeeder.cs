@@ -13,7 +13,7 @@
             {
                 var genres = new List<string>()
                 {
-                    "Literary Fiction",
+                    "Fantasy Fiction",
                     "Mystery",
                     "Thriller",
                     "Horror",

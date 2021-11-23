@@ -35,7 +35,7 @@
                 return RedirectToAction(nameof(this.AddGenre));
             }
 
-            this.TempData[SuccessfullyAddedGenreKey] = SuccessfullyAddedGenre;
+            TempData[SuccessfullyAddedGenreKey] = SuccessfullyAddedGenre;
 
             return RedirectToAction(nameof(this.AddGenre));
         }

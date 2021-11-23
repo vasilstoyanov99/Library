@@ -10,9 +10,10 @@
             var seeders = new List<ISeeder>()
             {
                 new RolesSeeder(),
-                new GenresSeeder(),
                 new UsersSeeder(),
                 new AdminSeeder(),
+                new GenresSeeder(),
+                new BooksSeeder()
             };
 
             foreach (var seeder in seeders)

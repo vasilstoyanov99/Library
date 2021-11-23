@@ -7,19 +7,18 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
     using static Areas.User.UserConstants;
+    using static Data.UserSeedData;
 
     public class UsersSeeder : ISeeder
     {
         public void Seed(LibraryDbContext data, IServiceProvider serviceProvider)
         {
-            var emails = new List<string>() { "user1@library.bg", "user2@library.bg" };
+            var emails = new List<string>() { User1Email, User2Email};
 
             if (!data.Users.Any(u => u.Email == emails.First() && u.Email == emails.Last()))
             {
                 var userManager =
                     serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                const string password = "123456";
 
                 foreach (var email in emails)
                 {
@@ -28,7 +27,7 @@
                         {
                             var user = new IdentityUser()
                                 { Email = email, UserName = email};
-                            await userManager.CreateAsync(user, password);
+                            await userManager.CreateAsync(user, Password);
                             await userManager.AddToRoleAsync(user, UserRoleName);
                         })
                         .GetAwaiter()
