@@ -19,7 +19,7 @@
         }
 
         [HttpPost]
-        public IActionResult Add(AddGenreFormModel addGenreFormModel)
+        public IActionResult AddGenre(AddGenreFormModel addGenreFormModel)
         {
             if (!ModelState.IsValid)
             {
