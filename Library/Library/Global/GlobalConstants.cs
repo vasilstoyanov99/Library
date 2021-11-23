@@ -50,9 +50,13 @@
 
             public const string LongDescriptionLength = "The provided long description must be at least {2} and {1} characters long!";
 
+            public const string GenreNameLength = "The provided genre must be at least {2} and {1} characters long!";
+
             public const string TitleAlreadyExists = "A book with the provided title already exists!";
 
             public const string GenreDoesNotExists = "The provied genre does not exists in our database!";
+
+            public const string GenreNameAlreadyExists = "The provied genre already exists!";
         }
 
         public static class Recommendations
@@ -71,7 +75,7 @@
             public const string SuccessfullyAddedBookKey =
                 "SABK";
 
-            public const string SuccessfullyAddedBook = "Book added successfully!";
+            public const string SuccessfullyAddedBook = "The book added successfully!";
 
             public const string SuccessfullyEditedBookKey =
                 "SEBK";
@@ -87,6 +91,11 @@
                 "UDBK";
 
             public const string UnsuccessfullyDeletedBook = "The book was not deleted successfully!";
+
+            public const string SuccessfullyAddedGenreKey =
+                "SDBK";
+
+            public const string SuccessfullyAddedGenre = "The genre was added successfully!";
         }
     }
 }

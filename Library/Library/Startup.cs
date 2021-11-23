@@ -1,3 +1,4 @@
+using Library.Areas.Admin.Services.Genres;
 using Library.Services.Books;
 
 namespace Library
@@ -49,6 +50,7 @@ namespace Library
             });
 
             services.AddTransient<IBooksService, BooksService>();
+            services.AddTransient<IGenresService, GenresService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
