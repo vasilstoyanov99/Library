@@ -4,29 +4,12 @@
     ViewBag.Title = "My Library";
 }
 
-@if (TempData.ContainsKey(SuccessfullyEditedBookKey))
-{
-    <div class="alert alert-success text-center" role="alert">
-        @TempData[SuccessfullyEditedBookKey]
-    </div>
-}
 @if (TempData.ContainsKey(SuccessfullyAddedBookKey))
 {
     <div class="alert alert-success text-center" role="alert">
         @TempData[SuccessfullyAddedBookKey]
     </div>
 }
-@if (TempData.ContainsKey(SuccessfullyDeletedBookKey))
-{
-    <div class="alert alert-success text-center" role="alert">
-        @TempData[SuccessfullyDeletedBookKey]
-    </div>
-}
-@if (TempData.ContainsKey(UnsuccessfullyDeletedBookKey))
-{
-    <div class="alert alert-danger text-center" role="alert">
-        @TempData[UnsuccessfullyDeletedBookKey]
-    </div>
-}
+
 
 <partial name="_BooksListingPartial" model="@Model" />
