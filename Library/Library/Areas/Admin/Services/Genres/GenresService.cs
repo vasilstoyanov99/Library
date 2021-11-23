@@ -14,7 +14,7 @@
         public bool AddGenreAndReturnBoolean(string name)
         {
             var htmlSanitizer = new HtmlSanitizer();
-            name = htmlSanitizer.Sanitize(name);
+            name = htmlSanitizer.Sanitize(name).Trim();
 
             if (_data.Genres.Any(g => g.Name == name))
                 return false;

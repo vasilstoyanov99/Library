@@ -74,7 +74,7 @@ namespace Library.Services.Books
             var doesTitleExistsInDb = false;
             var genreDoesNotExistsInDb = false;
             var htmlSanitizer = new HtmlSanitizer();
-            var title = htmlSanitizer.Sanitize(addBookFormModel.Title);
+            var title = htmlSanitizer.Sanitize(addBookFormModel.Title).Trim();
 
             if (_data.Books.Any(b => b.Title == title))
             {
@@ -196,13 +196,13 @@ namespace Library.Services.Books
             new()
             {
                 Title = title,
-                Author = htmlSanitizer.Sanitize(addBookFormModel.Author),
+                Author = htmlSanitizer.Sanitize(addBookFormModel.Author).Trim(),
                 GenreId = genreId,
                 ShortDescription = htmlSanitizer.Sanitize
-                    (addBookFormModel.ShortDescription),
+                    (addBookFormModel.ShortDescription).Trim(),
                 LongDescription = htmlSanitizer.Sanitize
-                    (addBookFormModel.LongDescription),
-                ImageUrl = htmlSanitizer.Sanitize(addBookFormModel.ImageUrl),
+                    (addBookFormModel.LongDescription).Trim(),
+                ImageUrl = htmlSanitizer.Sanitize(addBookFormModel.ImageUrl).Trim(),
                 UserId = userId
             };
 
@@ -225,12 +225,14 @@ namespace Library.Services.Books
             (Book book, string genreId, 
                 EditBookFormModel editBookFormModel, HtmlSanitizer htmlSanitizer)
         {
-            book.Author = htmlSanitizer.Sanitize(editBookFormModel.Author);
-            book.Title = htmlSanitizer.Sanitize(editBookFormModel.Title);
+            book.Author = htmlSanitizer.Sanitize(editBookFormModel.Author).Trim();
+            book.Title = htmlSanitizer.Sanitize(editBookFormModel.Title).Trim();
             book.GenreId = genreId;
-            book.ShortDescription = htmlSanitizer.Sanitize(editBookFormModel.ShortDescription);
-            book.LongDescription = htmlSanitizer.Sanitize(editBookFormModel.LongDescription);
-            book.ImageUrl = htmlSanitizer.Sanitize(editBookFormModel.ImageUrl);
+            book.ShortDescription = htmlSanitizer.Sanitize
+                (editBookFormModel.ShortDescription).Trim();
+            book.LongDescription = htmlSanitizer.Sanitize
+                (editBookFormModel.LongDescription).Trim();
+            book.ImageUrl = htmlSanitizer.Sanitize(editBookFormModel.ImageUrl).Trim();
             _data.SaveChanges();
         }
 
