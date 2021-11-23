@@ -11,6 +11,8 @@
             {
                 new RolesSeeder(),
                 new GenresSeeder(),
+                new UsersSeeder(),
+                new AdminSeeder(),
             };
 
             foreach (var seeder in seeders)
