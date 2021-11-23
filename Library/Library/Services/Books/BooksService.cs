@@ -73,14 +73,15 @@ namespace Library.Services.Books
         {
             var doesTitleExistsInDb = false;
             var genreDoesNotExistsInDb = false;
+            var htmlSanitizer = new HtmlSanitizer();
+            var title = htmlSanitizer.Sanitize(addBookFormModel.Title);
 
-            if (_data.Books.Any(b => b.Title == addBookFormModel.Title))
+            if (_data.Books.Any(b => b.Title == title))
             {
                 doesTitleExistsInDb = true;
                 return (doesTitleExistsInDb, genreDoesNotExistsInDb);
             }
 
-            var htmlSanitizer = new HtmlSanitizer();
             var genreId = htmlSanitizer.Sanitize(addBookFormModel.GenreId);
 
             if (!CheckIfGenreExistsInDb(genreId))
@@ -90,7 +91,7 @@ namespace Library.Services.Books
             }
 
             var newBook = FillBookDbModelWithDataAndReturnIt
-                (addBookFormModel, genreId, userId, htmlSanitizer);
+                (addBookFormModel, genreId, title, userId, htmlSanitizer);
             _data.Books.Add(newBook);
             _data.SaveChanges();
 
@@ -190,11 +191,11 @@ namespace Library.Services.Books
             };
 
         private Book FillBookDbModelWithDataAndReturnIt
-        (AddBookFormModel addBookFormModel, string genreId,
+        (AddBookFormModel addBookFormModel, string genreId, string title,
             string userId, HtmlSanitizer htmlSanitizer) =>
             new()
             {
-                Title = htmlSanitizer.Sanitize(addBookFormModel.Title),
+                Title = title,
                 Author = htmlSanitizer.Sanitize(addBookFormModel.Author),
                 GenreId = genreId,
                 ShortDescription = htmlSanitizer.Sanitize
