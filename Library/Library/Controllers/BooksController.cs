@@ -91,7 +91,7 @@ namespace Library.Controllers
 
             TempData[SuccessfullyAddedBookKey] = SuccessfullyAddedBook;
 
-            return Redirect(nameof(MyLibrary));
+            return RedirectToAction(nameof(this.MyLibrary));
         }
 
         [Authorize(Roles = AdminOrUser)]
@@ -134,7 +134,7 @@ namespace Library.Controllers
 
             TempData[SuccessfullyEditedBookKey] = SuccessfullyEditedBook;
 
-            return Redirect(nameof(MyLibrary));
+            return RedirectToAction(nameof(this.MyLibrary));
         }
 
         [Authorize(Roles = AdminOrUser)]
@@ -146,12 +146,12 @@ namespace Library.Controllers
             {
                 TempData[UnsuccessfullyDeletedBookKey] = UnsuccessfullyDeletedBook;
 
-                return Redirect(nameof(MyLibrary));
+                return RedirectToAction(nameof(this.MyLibrary));
             }
 
             TempData[SuccessfullyDeletedBookKey] = SuccessfullyDeletedBook;
 
-            return Redirect(nameof(MyLibrary));
+            return RedirectToAction(nameof(this.MyLibrary));
         }
 
         [Authorize(Roles = AdminOrUser)]
