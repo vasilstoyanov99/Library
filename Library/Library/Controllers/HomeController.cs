@@ -1,9 +1,11 @@
 ﻿namespace Library.Controllers
 {
-    using Models;
+    using System.Diagnostics;
+
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using System.Diagnostics;
+
+    using Models;
 
     public class HomeController : Controller
     {

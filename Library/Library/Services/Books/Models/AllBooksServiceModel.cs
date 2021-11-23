@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Library.Services.Books.Models
+﻿namespace Library.Services.Books.Models
 {
+    using System.Collections.Generic;
+
     using static Global.GlobalConstants.Paging;
 
     public class AllBooksServiceModel

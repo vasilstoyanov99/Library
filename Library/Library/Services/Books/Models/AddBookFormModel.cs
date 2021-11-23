@@ -2,8 +2,10 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     using static Global.GlobalConstants.DataValidations;
     using static Global.GlobalConstants.ErrorMessages;
+
     public class AddBookFormModel
     {
         [Required]

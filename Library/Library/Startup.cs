@@ -1,11 +1,5 @@
-using Library.Areas.Admin.Services.Genres;
-using Library.Services.Books;
-
 namespace Library
 {
-    using Infrastructure;
-    using Microsoft.AspNetCore.Mvc;
-    using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -13,6 +7,12 @@ namespace Library
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+
+    using Library.Areas.Admin.Services.Genres;
+    using Services.Books;
+    using Infrastructure;
+    using Data;
 
     public class Startup
     {

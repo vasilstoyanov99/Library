@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Library.Services.Books.Models
+﻿namespace Library.Services.Books.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class EditBookFormModel : AddBookFormModel
     {
         [Required] 

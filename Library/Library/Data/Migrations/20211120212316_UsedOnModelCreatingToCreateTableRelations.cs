@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Library.Data.Migrations
+﻿namespace Library.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class UsedOnModelCreatingToCreateTableRelations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

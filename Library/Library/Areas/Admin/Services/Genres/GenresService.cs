@@ -1,7 +1,9 @@
 ﻿namespace Library.Areas.Admin.Services.Genres
 {
-    using Ganss.XSS;
     using System.Linq;
+
+    using Ganss.XSS;
+
     using Library.Data.Models;
     using Data;
 

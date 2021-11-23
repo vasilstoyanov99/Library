@@ -4,7 +4,7 @@
 
 @if (Model.Books?.Count() >= 1)
 {
-    <partial name="_DividerPartial" model="@ViewBag.Title" />
+    <partial name="_DividerPartial" model="@ViewBag.Title"/>
 
     <div class="card-deck">
         @foreach (var book in Model.Books)

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Library.Services.Books.Models;
-
-namespace Library.Services.Books
+﻿namespace Library.Services.Books
 {
+    using System.Collections.Generic;
+    using Models;
+
     public interface IBooksService
     {
         AllBooksServiceModel GetAllBooks(int currentPage);

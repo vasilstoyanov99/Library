@@ -1,12 +1,11 @@
-﻿using Library.Data.Seeding;
-
-namespace Library.Infrastructure
+﻿namespace Library.Infrastructure
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
-
-    using Data;
     using Microsoft.EntityFrameworkCore;
+
+    using Data.Seeding;
+    using Data;
 
     public static class ApplicationBuilderExtensions
     {

@@ -1,13 +1,15 @@
-﻿using Ganss.XSS;
-
-namespace Library.Services.Books
+﻿namespace Library.Services.Books
 {
-    using System.Collections.Generic;
-    using Data;
-    using Library.Data.Models;
-    using Models;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
+
+    using Ganss.XSS;
+
+    using Library.Data.Models;
+    using Data;
+    using Models;
+
     using static Global.GlobalConstants.Paging;
 
     public class BooksService : IBooksService
