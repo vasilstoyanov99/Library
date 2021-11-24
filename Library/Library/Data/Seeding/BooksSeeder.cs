@@ -12,9 +12,7 @@
     {
         public void Seed(LibraryDbContext data, IServiceProvider serviceProvider)
         {
-            if (!data.Books.Any(b => b.Title == BookOne.Title && b.Title == BookTwo.Title
-                                                              && b.Title == BookThree.Title 
-                                                              && b.Title == BookFour.Title))
+            if (!data.Books.Any(b => b.Title == BookOne.Title))
             {
                 var user1Id = GetUserId(User1Email, data);
                 FillBookDbModelAndAddItInDb(data, BookOne.Author, BookOne.Title, BookOne.GenreName, user1Id,
