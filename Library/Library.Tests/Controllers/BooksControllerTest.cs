@@ -92,13 +92,13 @@
         [Fact]
         public void AddBookShouldRedirectWithTempDataMessageAndSaveBookWithValidData()
         {
-            var expectedModel = AddBookModel;
+            var addBookFormModel = AddBookModel;
 
             MyController<BooksController>
                 .Instance()
                 .WithUser(u => u.InRole(UserRoleName))
                 .WithData(TestGenre)
-                .Calling(c => c.AddBook(expectedModel))
+                .Calling(c => c.AddBook(addBookFormModel))
                 .ShouldHave()
                 .Data(data => data
                     .WithSet<Book>(set =>
@@ -154,13 +154,13 @@
         [Fact]
         public void EditShouldRedirectWithTempDataMessageAndSaveEditedBookWithValidData()
         {
-            var editedModel = EditedBookModel;
+            var editBookFormModel = EditedBookModel;
 
             MyController<BooksController>
                 .Instance()
                 .WithUser(u => u.InRole(UserRoleName))
                 .WithData(TestBook, TestGenre)
-                .Calling(c => c.Edit(editedModel))
+                .Calling(c => c.Edit(editBookFormModel))
                 .ShouldHave()
                 .Data(data => data
                     .WithSet<Book>(set =>
