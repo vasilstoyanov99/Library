@@ -1,4 +1,6 @@
-﻿namespace Library.Tests
+﻿using Library.Services.Books;
+
+namespace Library.Tests
 {
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +20,7 @@
 
             // Replace only your own custom services. The ASP.NET Core ones 
             // are already replaced by MyTested.AspNetCore.Mvc. 
-            /*services.ReplaceTransient<IHomeService, HomeService>();*/
+            services.ReplaceTransient<IBooksService, BooksService>();
             services.AddMvc();
         }
     }
