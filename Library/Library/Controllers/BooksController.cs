@@ -67,9 +67,6 @@ namespace Library.Controllers
         [Authorize(Roles = AdminOrUser)]
         public IActionResult AddBook(AddBookFormModel addBookFormModel)
         {
-            var userId = User.GetId();
-            var results = _booksService
-                .AddBookAndReturnBooleans(addBookFormModel, userId);
             var genres = GetGenresAndSetCacheIfNeeded();
 
             if (!ModelState.IsValid)
@@ -79,6 +76,10 @@ namespace Library.Controllers
 
                 return View("AddBook", addBookFormModel);
             }
+
+            var userId = User.GetId();
+            var results = _booksService
+                .AddBookAndReturnBooleans(addBookFormModel, userId);
 
             if (results.doesTitleExistsInDb)
                 ModelState.AddModelError(String.Empty, TitleAlreadyExists);
@@ -112,7 +113,6 @@ namespace Library.Controllers
         [Authorize(Roles = AdminOrUser)]
         public IActionResult Edit(EditBookFormModel editBookFormModel)
         {
-            var results = _booksService.EditBookAndReturnBooleans(editBookFormModel);
             var genres = GetGenresAndSetCacheIfNeeded();
 
             if (!ModelState.IsValid)
@@ -122,6 +122,8 @@ namespace Library.Controllers
 
                 return View("EditBook", editBookFormModel);
             }
+
+            var results = _booksService.EditBookAndReturnBooleans(editBookFormModel);
 
             if (results.bookDoesNotExistsInDb) 
                 ModelState.AddModelError(String.Empty, BookNotFound);
