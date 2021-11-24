@@ -1,21 +1,18 @@
-﻿using System.Linq;
-using Library.Data.Models;
-using Shouldly;
-
-namespace Library.Tests.Controllers
+﻿namespace Library.Tests.Controllers
 {
-    using System.Collections.Generic;
+    using System.Linq;
 
-    using MyTested.AspNetCore.Mvc;
     using Xunit;
+    using Shouldly;
+    using MyTested.AspNetCore.Mvc;
 
+    using Library.Data.Models;
     using Library.Controllers;
     using Library.Services.Books.Models;
 
     using static Data.DbModels.BooksControllerTestDbModels;
     using static Library.Global.GlobalConstants.Notifications;
     using static Library.Areas.User.UserConstants;
-    using static Library.Areas.Admin.AdminConstants;
     public class BooksControllerTest
     {
         [Fact]
