@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Library.Services.Books.Models;
-using Microsoft.AspNetCore.Identity;
-
-namespace Library.Tests.Data.DbModels
+﻿namespace Library.Tests.Data.DbModels
 {
+    using System.Collections.Generic;
+
+    using Library.Services.Books.Models;
     using Library.Data.Models;
 
     public class BooksControllerTestDbModels
