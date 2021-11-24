@@ -20,7 +20,7 @@ namespace Library.Tests
 
             // Replace only your own custom services. The ASP.NET Core ones 
             // are already replaced by MyTested.AspNetCore.Mvc. 
-            services.ReplaceTransient<IBooksService, BooksService>();
+            /*services.ReplaceTransient<IBooksService, BooksService>();*/
             services.AddMvc();
         }
     }
