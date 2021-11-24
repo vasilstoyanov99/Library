@@ -1,7 +1,7 @@
 ﻿namespace Library.Tests.Areas.Admin.Controllers
 {
-    using MyTested.AspNetCore.Mvc;
     using Xunit;
+    using MyTested.AspNetCore.Mvc;
 
     using Library.Areas.Admin.Controllers;
 

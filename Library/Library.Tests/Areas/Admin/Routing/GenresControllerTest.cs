@@ -1,7 +1,7 @@
 ﻿namespace Library.Tests.Areas.Admin.Routing
 {
-    using MyTested.AspNetCore.Mvc;
     using Xunit;
+    using MyTested.AspNetCore.Mvc;
 
     using Library.Areas.Admin.Controllers;
     public class GenresControllerTest

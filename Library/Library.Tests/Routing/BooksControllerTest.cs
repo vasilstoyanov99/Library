@@ -1,7 +1,7 @@
 ﻿namespace Library.Tests.Routing
 {
-    using MyTested.AspNetCore.Mvc;
     using Xunit;
+    using MyTested.AspNetCore.Mvc;
 
     using Library.Controllers;
 
