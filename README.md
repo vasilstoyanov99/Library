@@ -36,6 +36,10 @@ A simple ASP.NET Core MVC Web App which I created to exercise what I've learned 
 - Bootstrap
 - jQuery
 - HtmlSanitizer 
+- MyTested.AspNetCore.Mvc 
+- Shouldly 
+- xunit
+- Microsoft.NET.Test.Sdk
  
  ## License
 
